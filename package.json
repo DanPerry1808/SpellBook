@@ -24,6 +24,11 @@
         "format:check": "oxfmt --check .",
         "typecheck": "tsc --noEmit"
     },
+    "dependencies": {
+        "@inquirer/prompts": "^8.3.2",
+        "discord.js": "^14.25.1",
+        "zod": "^4.3.6"
+    },
     "devDependencies": {
         "@types/bun": "latest",
         "bunchee": "^6.9.4",

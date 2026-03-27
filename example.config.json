@@ -1,0 +1,10 @@
+{
+    "discord": {
+        "botToken": "",
+        "channelId": ""
+    },
+    "dictionaries": {
+        "dictionaryFolder": "dictionaries",
+        "defaultDictionaryFilename": "dictionary.txt"
+    }
+}
