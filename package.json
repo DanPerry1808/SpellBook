@@ -17,6 +17,7 @@
         "dev": "bunchee --watch",
         "build": "bunchee",
         "start": "node ./dist/index.js",
+        "bs": "bunchee && node ./dist/index.js",
         "test": "vitest run",
         "test:watch": "vitest",
         "lint": "oxlint",

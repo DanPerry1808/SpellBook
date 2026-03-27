@@ -3,7 +3,7 @@ import loadDictionary, { type DictionaryFile } from "./dictionary";
 import { loadConfig } from "./config";
 import mainMenu, { MainMenuChoice } from "./menus/mainMenu";
 //import sendEntries from './cliPrompts/sendEntries';
-//import selectDictionary from './cliPrompts/selectDictionary';
+import selectDictionary from "./menus/selectDictionary";
 
 const CONFIG_FILEPATH = "./spellbook.config.json";
 
@@ -36,11 +36,7 @@ const handleUserInput = async () => {
                 break;
             case MainMenuChoice.LOAD_DICTIONARY:
                 console.log("Load dictionary");
-            /*
-                dictionary = await selectDictionary(
-                    configFile.dictionaries.dictionaryFolder
-                );
-                */
+                dictionary = await selectDictionary(configFile.dictionaries.dictionaryFolder);
         }
     }
 };
