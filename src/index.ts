@@ -2,7 +2,7 @@ import { Client, TextChannel } from "discord.js";
 import loadDictionary, { type DictionaryFile } from "./dictionary";
 import { loadConfig } from "./config";
 import mainMenu, { MainMenuChoice } from "./menus/mainMenu";
-//import sendEntries from './cliPrompts/sendEntries';
+import sendEntries from "./menus/sendEntries";
 import selectDictionary from "./menus/selectDictionary";
 
 const CONFIG_FILEPATH = "./spellbook.config.json";
@@ -32,7 +32,7 @@ const handleUserInput = async () => {
             case MainMenuChoice.SEND_ENTRIES:
                 if (!dictionary) throw new Error("No dictionary has been loaded yet");
                 console.log("Send entries");
-                //await sendEntries(textChannel, dictionary.entries);
+                await sendEntries(textChannel, dictionary.entries);
                 break;
             case MainMenuChoice.LOAD_DICTIONARY:
                 console.log("Load dictionary");
