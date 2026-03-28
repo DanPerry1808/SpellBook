@@ -60,7 +60,9 @@ the name of something you'd like to send. This file format does not have support
 ### JSON Files
 
 The JSON file format allows providing multiple names for a single entity. If your characters have
-aliases, using this format is preferable.
+aliases, using this format is preferable. The first name given for an entity is assumed to be its
+"main" name and will appear in the search list as this name, though it can still match on other
+names when searching, and you can still select an alternate name before sending.
 
 ## Using the tool
 

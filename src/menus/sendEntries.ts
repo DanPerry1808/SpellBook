@@ -3,21 +3,80 @@ import { search } from "@inquirer/prompts";
 import { printSeparator } from "./utils";
 import type { DictionaryEntry } from "../dictionary";
 
-export const findMatches = (searchQuery: string | void, entries: DictionaryEntry[]): string[] => {
-    if (!searchQuery) return entries.map((e) => e.names[0]?.name!);
-    const searchString = searchQuery.toLowerCase();
-    const bestMatches = entries.filter((e) => e.names[0]?.nameLower.startsWith(searchString));
-    const bestMatchWords = bestMatches.map((m) => m.names[0]?.name!);
-    const partialMatches = entries.filter(
-        (e) =>
-            !bestMatchWords.includes(e.names[0]?.name!) &&
-            e.names.flatMap((n) => n.words).some((word) => word.startsWith(searchString)),
-    );
-    const partialMatchWords = partialMatches.map((e) => e.names[0]?.name!);
-    const allMatches = bestMatchWords.concat(partialMatchWords);
-    return allMatches;
+type Choice<T> = {
+    name: string;
+    value: T;
+    description?: string;
 };
 
+enum MatchType {
+    NONE,
+    PARTIAL,
+    FULL
+};
+
+type DictionaryEntryMatch = DictionaryEntry & {
+    matchType: MatchType;
+    matchIndex: number;
+};
+
+export const checkAllNames = (searchQuery: string, entry: DictionaryEntry): DictionaryEntryMatch => {
+    for (let i = 0; i < entry.names.length; i++) {
+        const name = entry.names[i];
+        // Typescript thinks name can be undefined above, so we need to check here
+        if (!name) continue;
+        if (name.nameLower.startsWith(searchQuery)) {
+            return {
+                ...entry,
+                matchType: MatchType.FULL,
+                matchIndex: i
+            };
+        }
+    }
+    for (let i = 0; i < entry.names.length; i++) {
+        const name = entry.names[i];
+        // Typescript thinks name can be undefined above, so we need to check here
+        if (!name) continue;
+        if (name.words.some(word => word.startsWith(searchQuery))) {
+            return {
+                ...entry,
+                matchType: MatchType.PARTIAL,
+                matchIndex: i
+            };
+        }
+    }
+    return {
+        ...entry,
+        matchType: MatchType.NONE,
+        matchIndex: -1
+    };
+};
+
+export const findMatches = (searchQuery: string | void, entries: DictionaryEntry[]): Choice<string>[] => {
+    if (!searchQuery) return entries.map((e) => {
+        const value = e.names[0]?.name!;
+        return {
+            name: value,
+            value: value,
+            description: value
+        }
+    });
+    const searchString = searchQuery.toLowerCase();
+    // Check all entries for matches, remove non-matching entries, search so that full matches are at the top
+    const matches = entries.map(entry => checkAllNames(searchString, entry)).filter(m => m.matchType !== MatchType.NONE).sort((a, b) => a.matchType - b.matchType);
+
+    return matches.map(match => {
+        const value = match.names[0]?.name!
+        const matchString = match.matchIndex === 0 ? "" : ` (matching on "${match.names[match.matchIndex]?.name}")`
+        return {
+            name: value,
+            value: value,
+            description: `${value}${matchString}`,
+        }
+    });
+};
+
+// TODO: Sort the list alphabetically by main name (or do this in dictionary loading)
 const selectInput = async (entries: DictionaryEntry[]): Promise<string> => {
     const message = await search<string>({
         message: "Start typing to filter entries:",

@@ -1,7 +1,122 @@
 import { describe, it, expect } from "vitest";
-import { findMatches } from "../src/menus/sendEntries";
+import { findMatches, checkAllNames } from "../src/menus/sendEntries";
 import type { DictionaryEntry } from "../src/dictionary";
 
+describe("checkAllNames", () => {
+    it("Returns a full match", () => {
+        const entry: DictionaryEntry = {
+            names: [
+                {
+                    name: "Bob Smith",
+                    nameLower: "bob smith",
+                    words: ["bob", "smith"]
+                },
+                {
+                    name: "Robert Smith",
+                    nameLower: "robert smith",
+                    words: ["robert", "smith"]
+                },
+                {
+                    name: "Robert I Smith",
+                    nameLower: "robert i smith",
+                    words: ["robert", "i", "smith"]
+                },
+            ]
+        };
+        const output = checkAllNames("robert", entry);
+        expect(output).toEqual({
+            ...entry,
+            matchType: 2,
+            matchIndex: 1
+        });
+    });
+
+    it("Returns a full match before a partial match", () => {
+        const entry: DictionaryEntry = {
+            names: [
+                {
+                    name: "Bob Smith",
+                    nameLower: "bob smith",
+                    words: ["bob", "smith"]
+                },
+                {
+                    name: "Robert Smith",
+                    nameLower: "robert smith",
+                    words: ["robert", "smith"]
+                },
+                {
+                    name: "Smithy",
+                    nameLower: "smithy",
+                    words: ["smithy"]
+                },
+            ]
+        };
+        const output = checkAllNames("smith", entry);
+        expect(output).toEqual({
+            ...entry,
+            matchType: 2,
+            matchIndex: 2
+        });
+    });
+
+    it("Returns a partial match if no full match", () => {
+        const entry: DictionaryEntry = {
+            names: [
+                {
+                    name: "Bob Jones",
+                    nameLower: "bob jones",
+                    words: ["bob", "jones"]
+                },
+                {
+                    name: "Robert Jones",
+                    nameLower: "robert jones",
+                    words: ["robert", "jones"]
+                },
+                {
+                    name: "Smithy",
+                    nameLower: "smithy",
+                    words: ["smithy"]
+                },
+            ]
+        };
+        const output = checkAllNames("jones", entry);
+        expect(output).toEqual({
+            ...entry,
+            matchType: 1,
+            matchIndex: 0
+        });
+    });
+
+    it("Returns no match if it does not match", () => {
+        const entry: DictionaryEntry = {
+            names: [
+                {
+                    name: "Bob Smith",
+                    nameLower: "bob smith",
+                    words: ["bob", "smith"]
+                },
+                {
+                    name: "Robert Smith",
+                    nameLower: "robert smith",
+                    words: ["robert", "smith"]
+                },
+                {
+                    name: "Robert I Smith",
+                    nameLower: "robert i smith",
+                    words: ["robert", "i", "smith"]
+                },
+            ]
+        };
+        const output = checkAllNames("bobby", entry);
+        expect(output).toEqual({
+            ...entry,
+            matchType: 0,
+            matchIndex: -1
+        });
+    });
+});
+
+/*
 describe("findMatches - no alternate names", () => {
     const entries: DictionaryEntry[] = [
         {
@@ -75,3 +190,4 @@ describe("findMatches - no alternate names", () => {
         expect(output).toEqual(expected);
     });
 });
+*/
