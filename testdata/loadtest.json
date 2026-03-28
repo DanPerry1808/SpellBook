@@ -1,0 +1,17 @@
+{
+    "name": "Test dictionary",
+    "entries": [
+        {
+            "names": ["James Jones", "Jim Jones", "J B Jones"]
+        },
+        {
+            "names": ["Bob Smith", "Robert Smith"]
+        },
+        {
+            "names": ["NAME"]
+        },
+        {
+            "names": ["Very Long Name", "Long Name"]
+        }
+    ]
+}

@@ -43,24 +43,35 @@ export const dictionaryPath = (folder: string, filepath: string): string => {
     return join(folder, filepath);
 };
 
+export const createNameObject = (name: string): DictionaryEntryName => {
+    const nameLower = name.toLowerCase();
+    return {
+        name: name,
+        nameLower: nameLower,
+        words: nameLower.split(/\s/),
+    };
+};
+
 export const loadTextDictionary = (fullPath: string): DictionaryFile => {
     const dictionaryData = readFileSync(fullPath, { encoding: "utf-8" });
     const dictionaryList = dictionaryData.split("\n").filter((line) => line.trim() !== "");
     return {
         name: basename(fullPath),
-        entries: dictionaryList.map((entry) => {
-            const entryLower = entry.toLowerCase();
+        entries: dictionaryList.map((entry) => ({
+            names: [createNameObject(entry)],
+        })),
+    };
+};
 
-            return {
-                names: [
-                    {
-                        name: entry,
-                        nameLower: entryLower,
-                        words: entryLower.split(/\s/),
-                    },
-                ],
-            };
-        }),
+export const loadJsonDictionary = (fullPath: string): DictionaryFile => {
+    const dictionaryData = readFileSync(fullPath, { encoding: "utf-8" });
+    const dictionaryJson = JSON.parse(dictionaryData);
+    const rawDictionary = dictionaryJsonSchema.parse(dictionaryJson);
+    return {
+        name: rawDictionary.name,
+        entries: rawDictionary.entries.map((entry) => ({
+            names: entry.names.map((name) => createNameObject(name)),
+        })),
     };
 };
 
@@ -72,6 +83,8 @@ const loadDictionary = (folder: string, filepath: string): DictionaryFile => {
     switch (fileExtension) {
         case ValidFileExtensions.TXT:
             return loadTextDictionary(fullPath);
+        case ValidFileExtensions.JSON:
+            return loadJsonDictionary(fullPath);
         default:
             throw new Error(
                 `Dictionary file ${filepath} has unsupported extension ${fileExtension}`,

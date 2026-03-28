@@ -46,6 +46,22 @@ type ConfigFile = {
 };
 ```
 
+## Dictionary Files
+
+In order to use the tool, you will need to provide a file containing the names you want to send.
+Example dictionary files can be found in the `testdata` directory.
+There are currently 2 different formats you can use:
+
+### Text Files
+
+This is the simplest type of dictionary. Simply provide a `.txt` file where each line contains
+the name of something you'd like to send. This file format does not have support for alternate names.
+
+### JSON Files
+
+The JSON file format allows providing multiple names for a single entity. If your characters have
+aliases, using this format is preferable.
+
 ## Using the tool
 
 - If you have not provided a default dictionary in the config, you will need to select one
