@@ -7,7 +7,7 @@ export const campaignJsonSchema = z.object({
 export const campaignEntitySchema = z.object({
     name: z.string(),
     entity: z.object({
-        type_id: z.number()
+        type_id: z.number(),
     }),
 });
 

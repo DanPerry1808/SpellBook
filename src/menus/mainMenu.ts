@@ -34,7 +34,7 @@ const mainMenu = async (currentDictionaryName: string | undefined): Promise<Main
             {
                 name: "Create new dictionary",
                 value: MainMenuChoice.NEW_DICTIONARY,
-                description: "Create a new dictionary from a Kanka JSON export"
+                description: "Create a new dictionary from a Kanka JSON export",
             },
             {
                 name: "Exit",

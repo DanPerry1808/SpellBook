@@ -102,7 +102,6 @@ export const findMatches = (
     });
 };
 
-// TODO: Sort the list alphabetically by main name (or do this in dictionary loading)
 const selectEntry = async (
     entries: DictionaryEntry[],
 ): Promise<DictionaryEntryMatch | undefined> => {

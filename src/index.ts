@@ -40,7 +40,10 @@ const handleUserInput = async () => {
                 dictionary = await selectDictionary(configFile.dictionaries.dictionaryFolder);
                 break;
             case MainMenuChoice.NEW_DICTIONARY:
-                await importFolderToDictionary(configFile.dictionaries.importFolder, configFile.dictionaries.dictionaryFolder);
+                await importFolderToDictionary(
+                    configFile.dictionaries.importFolder,
+                    configFile.dictionaries.dictionaryFolder,
+                );
                 break;
         }
     }
