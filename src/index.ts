@@ -4,6 +4,7 @@ import { loadConfig } from "./config";
 import mainMenu, { MainMenuChoice } from "./menus/mainMenu";
 import sendEntries from "./menus/sendEntries";
 import selectDictionary from "./menus/selectDictionary";
+import importFolderToDictionary from "./menus/import";
 
 const CONFIG_FILEPATH = "./spellbook.config.json";
 
@@ -37,6 +38,10 @@ const handleUserInput = async () => {
             case MainMenuChoice.LOAD_DICTIONARY:
                 console.log("Load dictionary");
                 dictionary = await selectDictionary(configFile.dictionaries.dictionaryFolder);
+                break;
+            case MainMenuChoice.NEW_DICTIONARY:
+                await importFolderToDictionary(configFile.dictionaries.importFolder, configFile.dictionaries.dictionaryFolder);
+                break;
         }
     }
 };

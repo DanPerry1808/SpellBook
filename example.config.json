@@ -5,6 +5,7 @@
     },
     "dictionaries": {
         "dictionaryFolder": "dictionaries",
-        "defaultDictionaryFilename": "dictionary.txt"
+        "defaultDictionaryFilename": "dictionary.txt",
+        "importFolder": "imports"
     }
 }

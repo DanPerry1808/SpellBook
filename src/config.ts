@@ -6,6 +6,7 @@ const DEFAULT_DICTIONARY_FOLDER = "dictionaries";
 const dictionaryConfig = z.strictObject({
     dictionaryFolder: z.string().default(DEFAULT_DICTIONARY_FOLDER),
     defaultDictionaryFilename: z.string().optional(),
+    importFolder: z.string().optional(),
 });
 
 export type DictionaryConfig = z.infer<typeof dictionaryConfig>;

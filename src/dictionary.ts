@@ -2,6 +2,18 @@ import { readFileSync } from "node:fs";
 import { join, extname, basename } from "node:path";
 import { z } from "zod";
 
+export enum Category {
+    CHARACTER = 1,
+    FAMILY = 2,
+    LOCATION = 3,
+    ORGANISATION = 4,
+    ITEM = 5,
+    EVENT = 7,
+    CALENDAR = 8,
+    RACE = 9,
+    QUEST = 10,
+}
+
 enum ValidFileExtensions {
     TXT = ".txt",
     JSON = ".json",
@@ -15,6 +27,7 @@ const dictionaryEntryNamesSchema = z.strictObject({
 
 const dictionaryEntrySchema = z.strictObject({
     names: z.array(dictionaryEntryNamesSchema).min(1),
+    category: z.enum(Category).optional(),
 });
 
 const dictionarySchema = z.strictObject({
@@ -24,6 +37,7 @@ const dictionarySchema = z.strictObject({
 
 const dictionaryEntryJsonSchema = z.strictObject({
     names: z.array(z.string().min(1)).min(1),
+    category: z.number().min(Category.CHARACTER).max(Category.QUEST).optional(),
 });
 
 const dictionaryJsonSchema = z.strictObject({
@@ -31,7 +45,10 @@ const dictionaryJsonSchema = z.strictObject({
     entries: z.array(dictionaryEntryJsonSchema).min(1),
 });
 
-type DictionaryJSONFile = z.infer<typeof dictionaryJsonSchema>;
+export type DictionaryJSONFile = z.infer<typeof dictionaryJsonSchema>;
+
+export type DictionaryJSONEntry = z.infer<typeof dictionaryEntryJsonSchema>;
+
 
 export type DictionaryFile = z.infer<typeof dictionarySchema>;
 

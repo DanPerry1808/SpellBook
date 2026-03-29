@@ -4,6 +4,7 @@ import { printSeparator } from "./utils";
 export enum MainMenuChoice {
     SEND_ENTRIES,
     LOAD_DICTIONARY,
+    NEW_DICTIONARY,
     EXIT,
 }
 
@@ -29,6 +30,11 @@ const mainMenu = async (currentDictionaryName: string | undefined): Promise<Main
                 name: "Load dictionary file",
                 value: MainMenuChoice.LOAD_DICTIONARY,
                 description: "Load a new dictionary from a file",
+            },
+            {
+                name: "Create new dictionary",
+                value: MainMenuChoice.NEW_DICTIONARY,
+                description: "Create a new dictionary from a Kanka JSON export"
             },
             {
                 name: "Exit",
