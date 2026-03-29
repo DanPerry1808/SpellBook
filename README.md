@@ -42,6 +42,9 @@ type ConfigFile = {
         // Optional: File name for default dictionary to open on launch
         // Filepath relative from the path given in dictionaryFolder
         defaultDictionaryFilename?: string | undefined;
+        // Optional: directory to place Kanka JSON folders for importing into the tool
+        // Filepath relative to project root
+        importFolder?: string | undefined;
     };
 };
 ```
@@ -64,6 +67,25 @@ aliases, using this format is preferable. The first name given for an entity is 
 "main" name and will appear in the search list as this name, though it can still match on other
 names when searching, and you can still select an alternate name before sending.
 
+## Importing Dictionaries from Kanka
+
+> [!WARNING]
+> I have no affiliation with Kanka whatsoever, this project is not endorsed or sponsored by Kanka in any way.
+> If you have an issue with importing Kanka data into this program, please do not contact them.
+
+[Kanka](https://kanka.io/) is a world-building tool for TTRPGs. It has functionality to export the
+articles written in it to a `.zip` file of JSON files. You can use the tool to convert a Kanka export
+into a JSON dictionary which the program can then use.
+
+To import a Kanka workspace, export it to JSON and download the `.zip` file it produces. Next
+ensure a value has been set for the `importFolder` variable in your `spellbook.config.json` file.
+Unzip the export file and place the resulting folder into your imports directory.
+
+Run the application and select "Create a new dictionary" from the main menu. From there you will be
+able to select the folder to import, the exact entity types you wish to import, and a filename for
+the output dictionary. Once the process has completed you can load the dictionary you just created
+from the "Load dictionary file" menu.
+
 ## Using the tool
 
 - If you have not provided a default dictionary in the config, you will need to select one
@@ -78,3 +100,11 @@ names when searching, and you can still select an alternate name before sending.
 - Use the arrow keys to traverse the list, then press enter to select an entry
 - The text of that entry will be sent to the Discord channel specified in the config file
 - To close the program from the Send Entries menu, press CTRL + C
+
+## Stuff to add
+
+- Add support for multiple names in `.txt` dictionary files
+- Sort entries alphabetically on loading (maybe add config option to disable)
+- Filter to only see specific entity types after loading dictionary
+- After importing dictionary, ask if you want to load it
+- Add more unit tests, look at mocking inquirer functions

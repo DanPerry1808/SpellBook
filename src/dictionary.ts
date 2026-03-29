@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join, extname, basename } from "node:path";
 import { z } from "zod";
+import { EntityType } from "./entityTypes";
 
 enum ValidFileExtensions {
     TXT = ".txt",
@@ -15,6 +16,7 @@ const dictionaryEntryNamesSchema = z.strictObject({
 
 const dictionaryEntrySchema = z.strictObject({
     names: z.array(dictionaryEntryNamesSchema).min(1),
+    category: z.enum(EntityType).optional(),
 });
 
 const dictionarySchema = z.strictObject({
@@ -24,6 +26,7 @@ const dictionarySchema = z.strictObject({
 
 const dictionaryEntryJsonSchema = z.strictObject({
     names: z.array(z.string().min(1)).min(1),
+    category: z.number().min(EntityType.CHARACTER).max(EntityType.CREATURE).optional(),
 });
 
 const dictionaryJsonSchema = z.strictObject({
@@ -31,7 +34,9 @@ const dictionaryJsonSchema = z.strictObject({
     entries: z.array(dictionaryEntryJsonSchema).min(1),
 });
 
-type DictionaryJSONFile = z.infer<typeof dictionaryJsonSchema>;
+export type DictionaryJSONFile = z.infer<typeof dictionaryJsonSchema>;
+
+export type DictionaryJSONEntry = z.infer<typeof dictionaryEntryJsonSchema>;
 
 export type DictionaryFile = z.infer<typeof dictionarySchema>;
 
