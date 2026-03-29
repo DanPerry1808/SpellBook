@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { findMatches, checkAllNames } from "../src/menus/sendEntries";
+import { checkAllNames } from "../src/menus/sendEntries";
 import type { DictionaryEntry } from "../src/dictionary";
 
 describe("checkAllNames", () => {
