@@ -9,25 +9,25 @@ describe("checkAllNames", () => {
                 {
                     name: "Bob Smith",
                     nameLower: "bob smith",
-                    words: ["bob", "smith"]
+                    words: ["bob", "smith"],
                 },
                 {
                     name: "Robert Smith",
                     nameLower: "robert smith",
-                    words: ["robert", "smith"]
+                    words: ["robert", "smith"],
                 },
                 {
                     name: "Robert I Smith",
                     nameLower: "robert i smith",
-                    words: ["robert", "i", "smith"]
+                    words: ["robert", "i", "smith"],
                 },
-            ]
+            ],
         };
         const output = checkAllNames("robert", entry);
         expect(output).toEqual({
             ...entry,
             matchType: 2,
-            matchIndex: 1
+            matchIndex: 1,
         });
     });
 
@@ -37,25 +37,25 @@ describe("checkAllNames", () => {
                 {
                     name: "Bob Smith",
                     nameLower: "bob smith",
-                    words: ["bob", "smith"]
+                    words: ["bob", "smith"],
                 },
                 {
                     name: "Robert Smith",
                     nameLower: "robert smith",
-                    words: ["robert", "smith"]
+                    words: ["robert", "smith"],
                 },
                 {
                     name: "Smithy",
                     nameLower: "smithy",
-                    words: ["smithy"]
+                    words: ["smithy"],
                 },
-            ]
+            ],
         };
         const output = checkAllNames("smith", entry);
         expect(output).toEqual({
             ...entry,
             matchType: 2,
-            matchIndex: 2
+            matchIndex: 2,
         });
     });
 
@@ -65,25 +65,25 @@ describe("checkAllNames", () => {
                 {
                     name: "Bob Jones",
                     nameLower: "bob jones",
-                    words: ["bob", "jones"]
+                    words: ["bob", "jones"],
                 },
                 {
                     name: "Robert Jones",
                     nameLower: "robert jones",
-                    words: ["robert", "jones"]
+                    words: ["robert", "jones"],
                 },
                 {
                     name: "Smithy",
                     nameLower: "smithy",
-                    words: ["smithy"]
+                    words: ["smithy"],
                 },
-            ]
+            ],
         };
         const output = checkAllNames("jones", entry);
         expect(output).toEqual({
             ...entry,
             matchType: 1,
-            matchIndex: 0
+            matchIndex: 0,
         });
     });
 
@@ -93,25 +93,25 @@ describe("checkAllNames", () => {
                 {
                     name: "Bob Smith",
                     nameLower: "bob smith",
-                    words: ["bob", "smith"]
+                    words: ["bob", "smith"],
                 },
                 {
                     name: "Robert Smith",
                     nameLower: "robert smith",
-                    words: ["robert", "smith"]
+                    words: ["robert", "smith"],
                 },
                 {
                     name: "Robert I Smith",
                     nameLower: "robert i smith",
-                    words: ["robert", "i", "smith"]
+                    words: ["robert", "i", "smith"],
                 },
-            ]
+            ],
         };
         const output = checkAllNames("bobby", entry);
         expect(output).toEqual({
             ...entry,
             matchType: 0,
-            matchIndex: -1
+            matchIndex: -1,
         });
     });
 });
