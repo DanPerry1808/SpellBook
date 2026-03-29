@@ -5,18 +5,21 @@ import { campaignEntitySchema, campaignJsonSchema, characterSchema } from "./imp
 import type { DictionaryJSONEntry, DictionaryJSONFile } from "../dictionary";
 import { ENTITY_TYPES, EntityType, type EntityTypeInfo } from "../entityTypes";
 
+// Returns all the directories in a given directory
 const getDirectories = (path: string): string[] => {
     return readdirSync(path, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => dirent.name);
 };
 
+// Returns all the files in a given directory
 const getFiles = (path: string): string[] => {
     return readdirSync(path, { withFileTypes: true })
         .filter((dirent) => dirent.isFile())
         .map((dirent) => dirent.name);
 };
 
+// Asks the user to select the folder to import
 const selectFolder = async (folders: string[]): Promise<string | undefined> => {
     const backButton = {
         name: "[RETURN TO MAIN MENU]",
@@ -48,6 +51,7 @@ const selectFolder = async (folders: string[]): Promise<string | undefined> => {
     return choice;
 };
 
+// Attempts to read the name field from the campaign.json file at the root of the directory being imported
 const readCampaignName = (dirContents: Dirent<string>[], basePath: string): string | undefined => {
     const hasCampaignFile =
         dirContents.filter((dirent) => dirent.isFile() && dirent.name === "campaign.json").length >
@@ -69,6 +73,7 @@ const readCampaignName = (dirContents: Dirent<string>[], basePath: string): stri
     }
 };
 
+// Shows user checkbox to select which entity types to show for a custom import
 const chooseCustomEntityTypes = async (): Promise<EntityTypeInfo[]> => {
     let selectedTypes: EntityTypeInfo[] = [];
     const choices = ENTITY_TYPES.map((e) => ({
@@ -85,6 +90,8 @@ const chooseCustomEntityTypes = async (): Promise<EntityTypeInfo[]> => {
     return selectedTypes;
 };
 
+// Let user choose from full, minimal, or custom import
+// Each option has a different number of entity types included
 const selectEntityTypes = async (): Promise<EntityTypeInfo[]> => {
     type ImportEntityChoice = "MINIMAL" | "FULL" | "CUSTOM";
     const minimalTypes = ENTITY_TYPES.filter((e) => e.inBasicImport);
@@ -120,6 +127,7 @@ const selectEntityTypes = async (): Promise<EntityTypeInfo[]> => {
     }
 };
 
+// Reads each JSON file from the selected entity types and produces a dictionary entry for each one
 const readEntries = (basePath: string, selectedEntityFolders: string[]): DictionaryJSONEntry[] => {
     const subdirectories = getDirectories(basePath).filter((d) =>
         selectedEntityFolders.includes(d),
@@ -153,6 +161,8 @@ const readEntries = (basePath: string, selectedEntityFolders: string[]): Diction
     return entries;
 };
 
+// Asks user for name of file to save new dictionary to,
+// .json suffix is optional, will be appended if missed off
 const enterOutputName = async (dictionaryFolder: string): Promise<string> => {
     let filename = "";
     while (filename.length < 1) {
@@ -173,6 +183,7 @@ const enterOutputName = async (dictionaryFolder: string): Promise<string> => {
     return filename;
 };
 
+// Serialises the dictionary and writes it to a JSON file
 const writeOutputFile = (
     dictionaryFolder: string,
     newFileName: string,
@@ -183,6 +194,7 @@ const writeOutputFile = (
     console.log(`Successfully saved dictionary to ${fullPath}`);
 };
 
+// Main function for importing a given folder
 const importToDictionary = async (
     importFolder: string,
     selectedFolder: string,
@@ -203,6 +215,7 @@ const importToDictionary = async (
     writeOutputFile(dictionaryFolder, outputName, dictionary);
 };
 
+// Asks user to select the folder to import, then calls the function to import it
 const importFolderToDictionary = async (
     importFolder: string | undefined,
     dictionaryFolder: string,
