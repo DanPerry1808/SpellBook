@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { campaignEntitySchema, campaignJsonSchema, characterSchema } from "./importSchemas";
 import type { DictionaryJSONEntry, DictionaryJSONFile } from "../dictionary";
 import { ENTITY_TYPES, EntityType, type EntityTypeInfo } from "../entityTypes";
+import loadDictionary from "../dictionary";
 
 // Returns all the directories in a given directory
 const getDirectories = (path: string): string[] => {
@@ -213,6 +214,10 @@ const importToDictionary = async (
     };
     const outputName = await enterOutputName(dictionaryFolder);
     writeOutputFile(dictionaryFolder, outputName, dictionary);
+    return {
+        campaignName: campaignName,
+        filename: outputName
+    }
 };
 
 // Asks user to select the folder to import, then calls the function to import it
@@ -230,7 +235,27 @@ const importFolderToDictionary = async (
     }
     const selectedFolder = await selectFolder(folders);
     if (!selectedFolder) return;
-    await importToDictionary(importFolder, selectedFolder, dictionaryFolder);
+    const newDictionary = await importToDictionary(importFolder, selectedFolder, dictionaryFolder);
+    if (newDictionary) {
+        const { campaignName, filename } = newDictionary;
+        const loadNewDictionary = await select<boolean>({
+            message: `New dictionary "${campaignName}" created as "${filename}", do you want to load it now?`,
+            choices: [
+                {
+                    name: "Yes",
+                    value: true,
+                },
+                {
+                    name: "No",
+                    value: false,
+                }
+            ]
+        });
+
+        if (loadNewDictionary) {
+            return loadDictionary(dictionaryFolder, filename);
+        }
+    }
 };
 
 export default importFolderToDictionary;

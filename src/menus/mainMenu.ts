@@ -12,10 +12,13 @@ const mainMenu = async (currentDictionaryName: string | undefined): Promise<Main
     printSeparator();
 
     console.log("Welcome to SpellBook");
+    let sendEntryDescription: string;
     if (currentDictionaryName) {
         console.log(`Current dictionary: ${currentDictionaryName}`);
+        sendEntryDescription = "Send entries from the currently loaded dictionary to Discord"
     } else {
         console.log("No dictionary loaded.");
+        sendEntryDescription = "You must load or import a dictionary before you can send entries"
     }
     const answer = await select({
         message: "Please select an option",
@@ -23,7 +26,7 @@ const mainMenu = async (currentDictionaryName: string | undefined): Promise<Main
             {
                 name: "Send entries",
                 value: MainMenuChoice.SEND_ENTRIES,
-                description: "Search the currently loaded dictionary",
+                description: sendEntryDescription,
                 disabled: currentDictionaryName === undefined,
             },
             {

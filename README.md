@@ -106,5 +106,4 @@ from the "Load dictionary file" menu.
 - Add support for multiple names in `.txt` dictionary files
 - Sort entries alphabetically on loading (maybe add config option to disable)
 - Filter to only see specific entity types after loading dictionary
-- After importing dictionary, ask if you want to load it
 - Add more unit tests, look at mocking inquirer functions
