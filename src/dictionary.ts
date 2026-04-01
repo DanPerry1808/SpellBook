@@ -63,7 +63,7 @@ export const loadTextDictionary = (fullPath: string): DictionaryFile => {
     return {
         name: basename(fullPath),
         entries: dictionaryList.map((entry) => ({
-            names: [createNameObject(entry)],
+            names: entry.split("|").map(name => createNameObject(name)),
         })),
     };
 };

@@ -58,7 +58,8 @@ There are currently 2 different formats you can use:
 ### Text Files
 
 This is the simplest type of dictionary. Simply provide a `.txt` file where each line contains
-the name of something you'd like to send. This file format does not have support for alternate names.
+the name of something you'd like to send. You can provide alternate names on the same line,
+separating each name with a pipe character '|'.
 
 ### JSON Files
 
@@ -103,7 +104,6 @@ from the "Load dictionary file" menu.
 
 ## Stuff to add
 
-- Add support for multiple names in `.txt` dictionary files
 - Sort entries alphabetically on loading (maybe add config option to disable)
 - Filter to only see specific entity types after loading dictionary
 - Add more unit tests, look at mocking inquirer functions
